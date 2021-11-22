@@ -42,7 +42,8 @@ function Get-Token {
       $tokenRequest = Invoke-WebRequest `
         -Uri "$apiBase/login" `
         -Method 'POST' `
-        -Headers $tokenHeaders
+        -Headers $tokenHeaders `
+		-UseBasicParsing
       if ($tokenRequest -and $tokenRequest.StatusCode -eq 200) {
         $tokenObject = $tokenRequest.Content | ConvertFrom-Json
         return $tokenObject.access_token
@@ -64,7 +65,8 @@ try {
       $CurrentForwardsResponse = Invoke-WebRequest `
         -Uri "$apiBase/centrex_users/$CentrexUserId/features/call_forwards" `
         -Method "GET" `
-        -Headers $headers
+        -Headers $headers `
+		-UseBasicParsing
       if ($CurrentForwardsResponse.StatusCode -ge 400) {
         throw "Expecting response code under 400"
       }
@@ -95,7 +97,8 @@ try {
         -Method "PUT" `
         -ContentType "application/x-www-form-urlencoded; charset=UTF-8" `
         -Body "call_forward_always%5Bnumber%5D=$NewForward" `
-        -Headers $headers
+        -Headers $headers `
+		-UseBasicParsing
       if ($SetResponse.StatusCode -ge 400) {
         throw "Expecting response code under 400"
       }
